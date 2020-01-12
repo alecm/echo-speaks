@@ -110,6 +110,7 @@ metadata {
         command "searchSpotify", ["string", "number", "number"]
         // command "searchTidal", ["string", "number", "number"]
         command "searchTuneIn", ["string", "number", "number"]
+	command "searchSimpleRadio", ["string", "number", "number"]
         command "sendAlexaAppNotification", ["string"]
         command "executeSequenceCommand", ["string"]
         command "executeRoutineId", ["string"]
@@ -297,6 +298,9 @@ Boolean isCommandTypeAllowed(String type, noLogs=false) {
                 break
             case "tuneInRadio":
                 warnMsg = "OOPS... Tune-In Radio is NOT Supported by this Device!!!"
+                break
+	    case "SimpleRadio":
+                warnMsg = "OOPS... Simple Radio is NOT Supported by this Device!!!"
                 break
             case "iHeartRadio":
                 warnMsg = "OOPS... iHeart Radio is NOT Supported by this Device!!!"
@@ -1604,6 +1608,9 @@ String getCommandTypeForProvider(String providerId) {
         case "I_HEART_RADIO":
             commandType = "iHeartRadio"
             break
+	case "SIMPLE_RADIO":
+           commandType = "simpleRadio"
+           break
     }
     return commandType
 }
@@ -1626,6 +1633,12 @@ def searchTuneIn(String searchPhrase, volume=null, sleepSeconds=null) {
     if(isCommandTypeAllowed("tuneInRadio")) {
         doSearchMusicCmd(searchPhrase, "TUNEIN", volume, sleepSeconds)
         incrementCntByKey("use_cnt_searchTuneInRadio")
+    }
+}
+def searchSimpleRadio(String searchPhrase, volume=null, sleepSeconds=null) {
+    if(isCommandTypeAllowed("simpleRadio")) {
+        doSearchMusicCmd(searchPhrase, "SIMPLE_RADIO", volume, sleepSeconds)
+        incrementCntByKey("use_cnt_searchSimpleRadio")
     }
 }
 
@@ -2113,11 +2126,11 @@ Map seqItemsAvail() {
         ],
         music: [
             "amazonmusic": "AMAZON_MUSIC", "applemusic": "APPLE_MUSIC", "iheartradio": "I_HEART_RADIO", "pandora": "PANDORA",
-            "spotify": "SPOTIFY", "tunein": "TUNEIN", "cloudplayer": "CLOUDPLAYER"
+            "spotify": "SPOTIFY","simpleradio": "SIMPLE_RADIO", "tunein": "TUNEIN", "cloudplayer": "CLOUDPLAYER"
         ],
         musicAlt: [
             "amazonmusic": "amazonMusic", "applemusic": "appleMusic", "iheartradio": "iHeartRadio", "pandora": "pandoraRadio",
-            "spotify": "spotify", "tunein": "tuneInRadio", "cloudplayer": "cloudPlayer"
+            "simpleradio": "simpleRadio","spotify": "spotify", "tunein": "tuneInRadio", "cloudplayer": "cloudPlayer"
         ]
     ]
 }
